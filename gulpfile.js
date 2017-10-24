@@ -31,6 +31,7 @@ var autoprefixerOptions = {
 // Html (Pug)
 function html() {
   return gulp.src(config.PATHS.src + '/index.pug')
+    .pipe($.if(PRODUCTION, $.replace('main.css', 'main.min.css')))
     .pipe($.pug({pretty: true}))
     .pipe(gulp.dest(config.PATHS.dist));
 };
