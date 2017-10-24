@@ -28,6 +28,32 @@ var autoprefixerOptions = {
   browsers: config.COMPATIBILITY
 };
 
+// Html (Pug)
+function html() {
+  return gulp.src(config.PATHS.src + '/index.pug')
+    .pipe($.pug({pretty: true}))
+    .pipe(gulp.dest(config.PATHS.dist));
+};
+
+// Elm init
+function elm_init() {
+  $.elm.init();
+};
+
+// Elm compile
+function elm_compile() {
+    // By explicitly handling errors, we prevent Gulp crashing when compile fails
+    function onErrorHandler(err) {
+      // No longer needed with gulp-elm 0.5
+  // console.log(err.message);
+  }
+  return gulp.src(config.PATHS.src + '/elm/Main.elm')             // "./src/Main.elm"
+	.pipe($.elm({"debug": true}))
+	.on('error', onErrorHandler)
+	.pipe( $.if(PRODUCTION, $.uglify()) )   // uglify
+	.pipe(gulp.dest(config.PATHS.dist));
+};
+
 // Styles
 function styles() {
   return gulp.src(config.PATHS.src +'/sass/main.scss')
@@ -49,7 +75,7 @@ function clean(done) {
 // The main build task
 gulp.task('build', gulp.series(
   clean,
-  gulp.parallel(styles)
+  gulp.parallel(elm_compile, styles, html)
 ));
 
 // Watch
@@ -57,7 +83,9 @@ function watch() {
 
   // Initialize Browsersync
   browsersync.init({
-    proxy: config.PROXY
+		server: {
+			baseDir: "./dist"
+		}
   });
 
   // Watch .scss files
@@ -72,3 +100,7 @@ gulp.task('default', gulp.series('build', watch));
 // Export these functions to the Gulp client
 gulp.task('clean', clean);
 gulp.task('styles', styles);
+gulp.task('html', html);
+gulp.task('elm-init', elm_init);
+gulp.task('elm-compile', elm_compile);
+  
