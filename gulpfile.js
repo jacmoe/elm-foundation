@@ -88,8 +88,13 @@ function watch() {
 		}
   });
 
+  // Watch .elm files
+  gulp.watch(config.PATHS.src + '/elm/**/*.elm', elm_compile);
+  // Watch .pug file
+  gulp.watch(config.PATHS.src + '/index.pug', html);
   // Watch .scss files
   gulp.watch(config.PATHS.src + '/scss/**/*.scss', styles);
+  gulp.watch([config.PATHS.dist + '/*']).on('change', browsersync.reload);
   // Watch any files in 'assets/dist', reload on change
   gulp.watch([config.PATHS.dist + '/css/*']).on('change', browsersync.reload);
 };
