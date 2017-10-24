@@ -38,7 +38,7 @@ function html() {
 
 // Elm init
 function elm_init() {
-  $.elm.init();
+  return $.elm.init();
 };
 
 // Elm compile
@@ -75,7 +75,7 @@ function clean(done) {
 
 // The main build task
 gulp.task('build', gulp.series(
-  clean,
+  clean, elm_init,
   gulp.parallel(elm_compile, styles, html)
 ));
 
