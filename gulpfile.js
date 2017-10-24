@@ -20,8 +20,8 @@ function loadConfig() {
 
 var sassOptions = {
   errLogToConsole: true,
-  outputStyle: 'expanded'
-  //includePaths: config.PATHS.sass
+  outputStyle: 'expanded',
+  includePaths: config.PATHS.sass
 };
 
 var autoprefixerOptions = {

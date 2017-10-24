@@ -10,3 +10,7 @@ PATHS:
   dist: "dist"
   # Path to source folder
   src: "src"
+
+  # Paths to Sass libraries, which can then be loaded with @import
+  sass:
+    - "/home/jacmoe/vhosts/elm-foundation/node_modules/bootstrap-v4-dev/scss"
